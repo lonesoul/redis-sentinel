@@ -1,0 +1,25 @@
+version: '2'
+services:
+    redis-master:
+        build: .
+        #restart: unless-stopped
+        environment:
+            - redis_port=16379
+            - redis_role=master
+        command: ["sh", "/data/start.sh"]
+    redis-slaves:
+        build: .
+        #restart: unless-stopped
+        environment:
+            - master_port=16379
+            - redis_port=16380
+            - redis_role=slave
+        command: ["sh", "/data/start.sh"]
+    redis-sentinels:
+        build: .
+        #restart: unless-stopped
+        environment:
+            - master_port=16379
+            - sentinel_port=16381
+            - redis_role=sentinel
+        command: ["sh", "/data/start.sh"]        
